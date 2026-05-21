@@ -1,10 +1,19 @@
 import type { ReportFormat } from '../report.ts';
+import type { Severity } from '../types.ts';
 import type { ChangedScope } from '../git-changed.ts';
+import {
+  matchFormat,
+  matchRuleFilters,
+  matchSeverity,
+  matchChanged,
+} from './match-arg.ts';
 
 export type Args = {
   paths: string[];
   format: ReportFormat;
   ruleIds?: string[];
+  excludeRuleIds?: string[];
+  severity?: Severity;
   changed?: ChangedScope;
 };
 
@@ -13,35 +22,22 @@ export function parseArgs(argv: string[]): Args {
   for (const a of argv) {
     applyArg(acc, a);
   }
+  assertRuleFiltersExclusive(acc);
   return acc;
 }
 
 function applyArg(acc: Args, arg: string): void {
-  if (arg === '--json') {
-    acc.format = 'json';
-    return;
-  }
-  if (arg.startsWith('--rules=')) {
-    acc.ruleIds = arg.slice('--rules='.length).split(',');
-    return;
-  }
-  if (arg === '--changed') {
-    acc.changed = 'working';
-    return;
-  }
-  if (arg.startsWith('--changed=')) {
-    acc.changed = parseChangedScope(arg.slice('--changed='.length));
-    return;
-  }
+  if (matchFormat(acc, arg)) { return; }
+  if (matchRuleFilters(acc, arg)) { return; }
+  if (matchSeverity(acc, arg)) { return; }
+  if (matchChanged(acc, arg)) { return; }
   acc.paths.push(arg);
 }
 
-function parseChangedScope(value: string): ChangedScope {
-  if (value === 'staged') {
-    return 'staged';
+function assertRuleFiltersExclusive(acc: Args): void {
+  const hasInclude = acc.ruleIds && acc.ruleIds.length > 0;
+  const hasExclude = acc.excludeRuleIds && acc.excludeRuleIds.length > 0;
+  if (hasInclude && hasExclude) {
+    throw new Error('--rules and --exclude-rules cannot be combined; use one or the other');
   }
-  if (value === 'working' || value === '') {
-    return 'working';
-  }
-  return { against: value };
 }

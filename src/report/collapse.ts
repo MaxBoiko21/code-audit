@@ -1,0 +1,51 @@
+import type { RuleId, Severity, Violation } from '../types.ts';
+import { compactRanges } from './_shared/line-ranges.ts';
+
+export type CollapsedGroup = {
+  rule: RuleId;
+  severity: Severity;
+  file: string;
+  message: string;
+  firstLine: number;
+  firstColumn: number;
+  count: number;
+  lineRanges: string;
+};
+
+export function collapseCascades(violations: Violation[]): CollapsedGroup[] {
+  const buckets = new Map<string, Violation[]>();
+  for (const v of violations) {
+    const key = JSON.stringify([v.file, v.rule, v.severity, v.message]);
+    const list = buckets.get(key) ?? [];
+    list.push(v);
+    buckets.set(key, list);
+  }
+  return [...buckets.values()].map(toGroup);
+}
+
+function toGroup(vs: Violation[]): CollapsedGroup {
+  const head = pickHead(vs);
+  const lines = vs.map((v) => v.line).sort((a, b) => a - b);
+  return {
+    rule: head.rule,
+    severity: head.severity,
+    file: head.file,
+    message: head.message,
+    firstLine: head.line,
+    firstColumn: head.column,
+    count: vs.length,
+    lineRanges: compactRanges(lines),
+  };
+}
+
+function pickHead(vs: Violation[]): Violation {
+  const first = vs[0];
+  if (!first) { throw new Error('collapseCascades: empty bucket'); }
+  let head = first;
+  for (const v of vs) {
+    if (v.line < head.line) { head = v; continue; }
+    if (v.line === head.line && v.column < head.column) { head = v; }
+  }
+  return head;
+}
+

@@ -40,11 +40,12 @@ function readFirstStringArg(call: CallExpression): string | null {
   return null;
 }
 
+const FEATURE_ANCHOR = /^[A-Za-z_]\w*[:\-]?$/;
+
 function startsWithFeatureNoun(label: string): boolean {
   const first = label.trim().split(/\s+/)[0];
   if (!first) { return false; }
-  const ch = first.charAt(0);
-  return ch >= 'A' && ch <= 'Z';
+  return FEATURE_ANCHOR.test(first);
 }
 
 export default rule;

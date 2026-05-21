@@ -1,6 +1,6 @@
 {
   "name": "code-audit",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "TypeScript code-style auditor enforcing buckets, size limits, type placement, and block-body conventions.",
   "type": "module",
   "private": false,
