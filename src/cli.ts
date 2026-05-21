@@ -1,3 +1,4 @@
+#!/usr/bin/env bun
 import { runAudit } from './runner.ts';
 import { formatReport } from './report.ts';
 import { resolveChangedFiles } from './git-changed.ts';

@@ -11,10 +11,18 @@ export function getRepoRoot(): string {
 }
 
 export function listChangedPaths(root: string, scope: ChangedScope): string[] {
-  const args = buildDiffArgs(scope);
+  const tracked = runGit(root, buildDiffArgs(scope));
+  if (scope !== 'working') {
+    return tracked;
+  }
+  const untracked = runGit(root, ['ls-files', '--others', '--exclude-standard']);
+  return [...tracked, ...untracked];
+}
+
+function runGit(root: string, args: string[]): string[] {
   const r = spawnSync('git', args, { cwd: root, encoding: 'utf8' });
   if (r.status !== 0) {
-    throw new Error('git diff failed: ' + r.stderr.trim());
+    throw new Error('git ' + args[0] + ' failed: ' + r.stderr.trim());
   }
   return r.stdout.split('\n').filter((line) => line.length > 0);
 }
