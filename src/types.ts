@@ -22,8 +22,12 @@ export type Violation = {
   message: string;
 };
 
+export type RuleContext = {
+  interfaceNameCounts: Map<string, number>;
+};
+
 export type Rule = {
   id: RuleId;
   appliesTo: (filePath: string) => boolean;
-  check: (sourceFile: SourceFile) => Violation[];
+  check: (sourceFile: SourceFile, ctx: RuleContext) => Violation[];
 };

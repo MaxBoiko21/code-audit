@@ -8,6 +8,6 @@ export function testNameViolation(file: SourceFile, at: Node, label: string): Vi
     severity: 'warn',
     file,
     at,
-    message: `test name "${label}" should start with a feature noun (capitalized first word)`,
+    message: `test name "${label}" should start with a feature anchor (identifier-like first token)`,
   });
 }
