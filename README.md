@@ -73,7 +73,7 @@ The runner exempts files from rules per path:
 
 - `*.d.ts`, `node_modules/**`, `dist/**` — excluded from all rules.
 - `**/migrations/**`, `**/seeds/**`, `**/__generated__/**`, `*.gen.ts`, `*.generated.ts` — exempt from every rule.
-- `*.test.ts` / `*.spec.ts` — exempt from `R3-function-size`, `R4-file-size`, `R7-params` (size and parameter limits do not apply in tests). Still subject to `R9-types`, `R12-block-bodies`, and `TEST-R7-naming`.
+- `*.test.ts` / `*.spec.ts` — only `TEST-R7-naming` runs on test files. The other rules (`R1`, `R3`, `R4`, `R7`, `R9`, `R12`, `TS-*`) gate on `isSourceTsFile`, which already excludes tests. The exemption map exists so that if any of those rules is later widened to cover tests, R3/R4/R7 stay opted out.
 
 ## JSON output schema
 
