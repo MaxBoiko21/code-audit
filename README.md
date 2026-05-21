@@ -55,7 +55,7 @@ Full prose for each rule lives in [code-style.md](https://github.com/MaxBoiko21/
 | Flag | Effect |
 |------|--------|
 | `--json` | JSON output (machine-readable, full violation list — severity filter does not apply). |
-| `--summary` | Compact summary: totals, by-rule breakdown, top-10 files. |
+| `--summary` | Summary only: totals, by-rule breakdown, top-10 files. The same block is appended to the default pretty output, so `--summary` is the "drop the per-file dump" switch. |
 | `--rules=A,B,C` | Run only the listed rules. |
 | `--exclude-rules=A,B` | Skip the listed rules. Cannot be combined with `--rules`. |
 | `--severity=error` | Show only errors in pretty/summary output. Exit code unchanged. |
@@ -103,4 +103,4 @@ ESLint and Biome cover syntax and a fixed set of rules. They don't cover the rul
 
 ## Status
 
-v0.2 — 9 rules, dogfood-clean. `--summary`, `--severity`, `--exclude-rules` flags. Cross-file declaration merging detection. Per-rule exemption map. Cascade collapsing in pretty output.
+v0.2.1 — 9 rules, dogfood-clean. Default pretty output now ends with the summary block (totals, by-rule, top-10 files). Top-10 sorted by errors first, total as tiebreaker. `--summary`, `--severity`, `--exclude-rules` flags. Cross-file declaration merging detection. Per-rule exemption map. Cascade collapsing in pretty output.
