@@ -1,5 +1,5 @@
 import type { SourceFile } from 'ts-morph';
-import type { Rule, RuleContext, RuleId, Violation } from './types.ts';
+import type { Rule, RuleContext, Violation } from './types.ts';
 import { rules } from './rules/index.ts';
 import { loadProject } from './project-loader.ts';
 import { buildInterfaceNameCounts } from './rules/_shared/interface-merging.ts';
@@ -51,7 +51,7 @@ function runRulesOnFile(
   const out: Violation[] = [];
   for (const rule of activeRules) {
     if (!rule.appliesTo(path)) { continue; }
-    if (exempt.has(rule.id as RuleId)) { continue; }
+    if (exempt.has(rule.id)) { continue; }
     out.push(...rule.check(file, ctx));
   }
   return out;
