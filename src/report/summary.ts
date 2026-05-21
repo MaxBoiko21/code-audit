@@ -1,6 +1,7 @@
 import type { Violation } from '../types.ts';
 import { groupByFile } from './_shared/group-by-file.ts';
 import { tally, tallyByRule, formatRow, type Tally } from './summary/tally.ts';
+import { byErrorsThenTotal } from './summary/sort.ts';
 
 const TOP_FILES = 10;
 const RULE_LABEL_WIDTH = 24;
@@ -33,7 +34,7 @@ function renderByRule(violations: Violation[]): string {
 function renderTopFiles(violations: Violation[]): string {
   const byFile = groupByFile(violations);
   const entries = [...byFile.entries()].map(([file, vs]) => ({ file, tally: tally(vs) }));
-  entries.sort((a, b) => b.tally.total - a.tally.total);
+  entries.sort(byErrorsThenTotal);
   const rows = entries.slice(0, TOP_FILES).map((e) => formatRow(e.file, e.tally, FILE_LABEL_WIDTH));
   return [`Top ${TOP_FILES} files:`, ...rows].join('\n');
 }
