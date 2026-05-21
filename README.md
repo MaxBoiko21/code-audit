@@ -71,7 +71,7 @@ Full prose for each rule lives in [code-style.md](https://github.com/MaxBoiko21/
 
 The runner exempts files from rules per path:
 
-- `*.d.ts`, `node_modules/**`, `dist/**` — excluded from all rules.
+- `*.d.ts` — globally excluded by `isSourceTsFile`; the only explicit blanket exclusion. `node_modules/` and `dist/` are not enforced — they're avoided in practice because ts-morph's glob respects `.gitignore` and the default positional glob is `src/**/*.{ts,tsx}`. Passing an explicit `dist/**/*.ts` would audit those files.
 - `**/migrations/**`, `**/seeds/**`, `**/__generated__/**`, `*.gen.ts`, `*.generated.ts` — exempt from every rule.
 - `*.test.ts` / `*.spec.ts` — only `TEST-R7-naming` runs on test files. The other rules (`R1`, `R3`, `R4`, `R7`, `R9`, `R12`, `TS-*`) gate on `isSourceTsFile`, which already excludes tests. The exemption map exists so that if any of those rules is later widened to cover tests, R3/R4/R7 stay opted out.
 
