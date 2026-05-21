@@ -1,0 +1,32 @@
+export function mediumish(): number {
+  const a1 = 1;
+  const a2 = 2;
+  const a3 = 3;
+  const a4 = 4;
+  const a5 = 5;
+  const a6 = 6;
+  const a7 = 7;
+  const a8 = 8;
+  const a9 = 9;
+  const a10 = 10;
+  const a11 = 11;
+  const a12 = 12;
+  const a13 = 13;
+  const a14 = 14;
+  const a15 = 15;
+  const a16 = 16;
+  const a17 = 17;
+  const a18 = 18;
+  const a19 = 19;
+  const a20 = 20;
+  const a21 = 21;
+  const a22 = 22;
+  const a23 = 23;
+  const a24 = 24;
+  const a25 = 25;
+  const a26 = 26;
+  const a27 = 27;
+  const a28 = 28;
+  const a29 = 29;
+  return a1 + a2 + a3 + a4 + a5 + a6 + a7 + a8 + a9 + a10 + a11 + a12 + a13 + a14 + a15 + a16 + a17 + a18 + a19 + a20 + a21 + a22 + a23 + a24 + a25 + a26 + a27 + a28 + a29;
+}
